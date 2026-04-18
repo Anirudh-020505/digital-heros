@@ -1,16 +1,5 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "vite",
-  "env": [
-    "DATABASE_URL",
-    "STRIPE_SECRET_KEY",
-    "STRIPE_PUBLISHABLE_KEY",
-    "STRIPE_WEBHOOK_SECRET",
-    "STRIPE_PRICE_MONTHLY_ID",
-    "STRIPE_PRICE_YEARLY_ID",
-    "JWT_SECRET",
-    "NODE_ENV",
-    "APP_URL"
-  ]
+  "framework": "vite"
 }
