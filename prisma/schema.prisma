@@ -1,0 +1,137 @@
+// This is your Prisma schema file for the Digital Heroes golf subscription platform
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// User model - Represents a subscriber or admin
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  role              Role     @default(SUBSCRIBER)
+  stripeCustomerId  String?  @unique
+
+  // Relations
+  scores            Score[]
+  subscriptions     Subscription[]
+  winnerVerifications WinnerVerification[]
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+enum Role {
+  SUBSCRIBER
+  ADMIN
+}
+
+// Subscription model - Tracks user subscription status
+model Subscription {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  plan              Plan
+  status            SubscriptionStatus
+  stripeSubscriptionId String? @unique
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([userId, plan])
+}
+
+enum Plan {
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+// Score model - Represents a user's golf score entry
+model Score {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  value             Int      // Score between 1-45
+  date              DateTime // The date of the score entry
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // CRITICAL CONSTRAINT: One score per user per date
+  @@unique([userId, date])
+}
+
+// Draw model - Monthly draw/lottery
+model Draw {
+  id                String   @id @default(cuid())
+  month             Int      // 1-12
+  year              Int
+
+  status            DrawStatus
+  winningNumbers    Int[]    // Array of winning numbers
+  jackpotRollover   Float    @default(0)
+
+  // Relations
+  winnerVerifications WinnerVerification[]
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([year, month])
+}
+
+enum DrawStatus {
+  DRAFT
+  PUBLISHED
+}
+
+// Charity model - Featured charities
+model Charity {
+  id                String   @id @default(cuid())
+  name              String
+  description       String
+  isFeatured        Boolean  @default(false)
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// WinnerVerification model - Tracks prize claims and payouts
+model WinnerVerification {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  drawId            String
+  draw              Draw     @relation(fields: [drawId], references: [id], onDelete: Cascade)
+
+  proofUrl          String   // URL to uploaded proof screenshot
+  status            VerificationStatus
+  payoutStatus      PayoutStatus
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([userId, drawId])
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PayoutStatus {
+  PENDING
+  PAID
+}

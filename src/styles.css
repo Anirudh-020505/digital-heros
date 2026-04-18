@@ -1,0 +1,200 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Digital Heroes — Deep Obsidian + Glass design system.
+ * All custom colors live here as oklch tokens. Components must use semantic
+ * Tailwind classes (bg-background, text-foreground, etc.) — never hardcoded.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-emerald-glow: var(--emerald-glow);
+  --color-cyan-glow: var(--cyan-glow);
+
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* Deep Obsidian (#0B0F19) */
+  --background: oklch(0.16 0.025 260);
+  --foreground: oklch(0.97 0.01 240);
+
+  --card: oklch(0.22 0.03 260);
+  --card-foreground: oklch(0.97 0.01 240);
+  --popover: oklch(0.2 0.03 260);
+  --popover-foreground: oklch(0.97 0.01 240);
+
+  /* Emerald #10B981 */
+  --primary: oklch(0.72 0.17 162);
+  --primary-foreground: oklch(0.16 0.025 260);
+
+  /* Cyan #06B6D4 */
+  --secondary: oklch(0.74 0.13 210);
+  --secondary-foreground: oklch(0.16 0.025 260);
+
+  --muted: oklch(0.28 0.025 260);
+  --muted-foreground: oklch(0.7 0.02 250);
+
+  --accent: oklch(0.74 0.13 210);
+  --accent-foreground: oklch(0.16 0.025 260);
+
+  --destructive: oklch(0.65 0.22 25);
+  --destructive-foreground: oklch(0.97 0.01 240);
+
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 8%);
+  --ring: oklch(0.72 0.17 162);
+
+  --emerald-glow: oklch(0.72 0.17 162);
+  --cyan-glow: oklch(0.74 0.13 210);
+
+  /* Gradients & shadows */
+  --gradient-hero: radial-gradient(
+      ellipse 80% 60% at 20% 0%,
+      color-mix(in oklab, var(--primary) 25%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 70% 50% at 90% 30%,
+      color-mix(in oklab, var(--secondary) 22%, transparent),
+      transparent 65%
+    );
+  --gradient-emerald-cyan: linear-gradient(
+    135deg,
+    var(--emerald-glow),
+    var(--cyan-glow)
+  );
+  --shadow-glow-emerald: 0 0 60px -10px
+    color-mix(in oklab, var(--emerald-glow) 55%, transparent);
+  --shadow-glow-cyan: 0 0 60px -10px
+    color-mix(in oklab, var(--cyan-glow) 55%, transparent);
+  --shadow-float: 0 30px 80px -20px oklch(0 0 0 / 0.6),
+    0 10px 30px -10px oklch(0 0 0 / 0.5);
+}
+
+.dark {
+  /* Single-theme app — dark is the default. Mirror :root. */
+  --background: oklch(0.16 0.025 260);
+  --foreground: oklch(0.97 0.01 240);
+  --card: oklch(0.22 0.03 260);
+  --card-foreground: oklch(0.97 0.01 240);
+  --popover: oklch(0.2 0.03 260);
+  --popover-foreground: oklch(0.97 0.01 240);
+  --primary: oklch(0.72 0.17 162);
+  --primary-foreground: oklch(0.16 0.025 260);
+  --secondary: oklch(0.74 0.13 210);
+  --secondary-foreground: oklch(0.16 0.025 260);
+  --muted: oklch(0.28 0.025 260);
+  --muted-foreground: oklch(0.7 0.02 250);
+  --accent: oklch(0.74 0.13 210);
+  --accent-foreground: oklch(0.16 0.025 260);
+  --destructive: oklch(0.65 0.22 25);
+  --destructive-foreground: oklch(0.97 0.01 240);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 8%);
+  --ring: oklch(0.72 0.17 162);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image: var(--gradient-hero);
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background-color: oklch(1 0 0 / 0.05);
+    backdrop-filter: blur(40px) saturate(140%);
+    -webkit-backdrop-filter: blur(40px) saturate(140%);
+    border: 1px solid oklch(1 0 0 / 0.1);
+  }
+
+  .glass-strong {
+    background-color: oklch(1 0 0 / 0.08);
+    backdrop-filter: blur(48px) saturate(160%);
+    -webkit-backdrop-filter: blur(48px) saturate(160%);
+    border: 1px solid oklch(1 0 0 / 0.14);
+  }
+
+  .text-gradient-emerald-cyan {
+    background: var(--gradient-emerald-cyan);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .glow-emerald {
+    box-shadow: var(--shadow-glow-emerald);
+  }
+  .glow-cyan {
+    box-shadow: var(--shadow-glow-cyan);
+  }
+  .float-shadow {
+    box-shadow: var(--shadow-float);
+  }
+
+  .grid-overlay {
+    background-image:
+      linear-gradient(oklch(1 0 0 / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(1 0 0 / 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+  }
+}
